@@ -5,61 +5,51 @@
   */
 
   $.liveRef = function(selector) {
-    var $jqlStem, jqlOperator, jqlSelector, popped, splitted;
-    splitted = selector.replace(RegExp(" > ", "g"), ">").replace(RegExp(" >", "g"), ">").replace(/> /g, ">").replace(/>/g, "@>@").replace(RegExp(" \\+ ", "g"), "+").replace(RegExp(" \\+", "g"), "+").replace(/\+ /g, "+").replace(/\+/g, "@+@").replace(RegExp(" ~ ", "g"), "~").replace(RegExp(" ~", "g"), "~").replace(/~ /g, "~").replace(/~/g, "@~@").replace(RegExp(" ", "g"), "@ @").split("@");
-    if (splitted.length > 3) {
-      jqlSelector = splitted.pop();
-      popped = splitted.pop();
-      jqlOperator = (function() {
+    var $liveRefcontext, combinator, liveRefMethod, liveRefSelector, splitted, _ref;
+    splitted = selector.trim().replace(/\s{2,}/g, ' ').replace(RegExp(" > ", "g"), ">").replace(RegExp(" >", "g"), ">").replace(/> /g, ">").replace(/>/g, "@>@").replace(RegExp(" \\+ ", "g"), "+").replace(RegExp(" \\+", "g"), "+").replace(/\+ /g, "+").replace(/\+/g, "@+@").replace(RegExp(" ~ ", "g"), "~").replace(RegExp(" ~", "g"), "~").replace(/~ /g, "~").replace(/~/g, "@~@").replace(RegExp(" ", "g"), "@ @").split("@");
+    if ((_ref = splitted[splitted.length - 1]) === " " || _ref === ">" || _ref === "+" || _ref === "~") {
+      splitted.pop();
+    }
+    if (splitted.length >= 3) {
+      liveRefSelector = splitted.pop();
+      combinator = splitted.pop();
+      liveRefMethod = (function() {
         switch (false) {
-          case popped !== " ":
+          case combinator !== " ":
             return "find";
-          case popped !== "+":
+          case combinator !== "+":
             return "next";
-          case popped !== ">":
+          case combinator !== ">":
             return "children";
-          case popped !== "~":
+          case combinator !== "~":
             return "nextSiblings";
         }
       })();
-      $jqlStem = $(splitted.join(""));
-    } else if (splitted(length === 1)) {
-      jqlSelector = splitted[0];
-      jqlOperator = "find";
-      $jqlStem = $("body");
+      $liveRefcontext = $(splitted.join(""));
+    } else {
+      liveRefSelector = splitted[0];
+      liveRefMethod = "find";
+      $liveRefcontext = $("body");
     }
     return (function() {
-      return $jqlStem[jqlOperator](jqlSelector);
+      return $liveRefcontext[liveRefMethod](liveRefSelector);
     })();
   };
-  /* 
-  quick and dirty.
-  needs much more testing 
-  this can probably be massively refactored and improved
-  */
-
   return $.fn.extend({
     laterSiblings: function(selector) {
-      var $parentChildren, context, matches, thisIndex;
-      context = this;
+      var $parentChildren, index, matches;
+      selector = selector || function() {
+        return true;
+      };
       $parentChildren = this.parent().children();
-      thisIndex = false;
+      index = $parentChildren.index(this);
       matches = [];
-      $parentChildren.each(function(i) {
-        if (context.is($(this))) {
-          thisIndex = 8;
+      while (index < $parentChildren.length) {
+        index++;
+        if ($parentChildren.eq(index).is(selector)) {
+          matches.push($parentChildren[index]);
         }
-        if (thisIndex) {
-          if (selector) {
-            if ($(this).is(selector)) {
-              return matches.push($(this).not(context)[0]);
-            }
-          } else {
-            return matches.push($(this).not(context)[0]);
-          }
-        }
-      });
-      matches.shift();
+      }
       return $(matches);
     }
   });
