@@ -4,8 +4,8 @@ do ( $ = jQuery ) ->
   attaching to $ instead of $.fn, since $.fn returns a jQuery object of the selector
   ###
 
-  $.liveRef = ( selector ) ->
-    # using @ as the major delimiter
+  $.liveRef = ( selector, activeSelector ) ->
+    # using @ as the major delimiter since that character shouldn't appear in a CSS selector.
     splitted = selector
       .trim() # get rid of leading and trailing spaces
       .replace(/\s{2,}/g, ' ') # replace multiple consecutive spaces with a single space
@@ -49,7 +49,7 @@ do ( $ = jQuery ) ->
       # which is then used to get a jQuery object and cache it
       $liveRefcontext = $( splitted.join( "" ) )
 
-    # if we don't have an array with [context, combinator, selector]
+    # if splitted doesn't have at least [context, combinator, selector]
     # then unless the original string was malformed, the array should have length = 1
     # use the first (and hopefully only) element as the selector
     # use find as the method...
@@ -68,10 +68,5 @@ do ( $ = jQuery ) ->
       selector = selector or -> return true
       $parentChildren = this.parent().children()
       index = $parentChildren.index( this )
-      matches = []
-      while index < $parentChildren.length
-        index++
-        if $parentChildren.eq( index ).is( selector )
-          matches.push( $parentChildren[index] )
-      return $( matches )
+      return $parentChildren.slice( index ).filter( selector )
 
