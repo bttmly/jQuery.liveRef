@@ -1,7 +1,5 @@
 do ( $ = jQuery ) ->
 
-  # using @ as the major delimiter since that character shouldn't appear in a valid CSS selector.
-  # declare this here so we don't recreate this function on each invocation.
   splitSelector = ( cssSelector ) ->
     return cssSelector
     .trim() # get rid of leading and trailing spaces
@@ -9,17 +7,17 @@ do ( $ = jQuery ) ->
     .replace(RegExp(" > ", "g"), ">") # "ul > li" becomes "ul>li"
     .replace(RegExp(" >", "g"), ">") # "ul >li" becomes "ul>li"
     .replace(/> /g, ">") # "ul> li" becomes "ul>li"
-    .replace(/>/g, "@>@") # "ul>li" becomes "ul@>@li"
+    .replace(/>/g, "✄>✄") # "ul>li" becomes "ul✄>✄li"
     .replace(RegExp(" \\+ ", "g"), "+") # "h1 + p" becomes "h1+p"
     .replace(RegExp(" \\+", "g"), "+") # "h1 +p" becomes "h1+p"
     .replace(/\+ /g, "+") # "h1+ p" becomes "h1+p"
-    .replace(/\+/g, "@+@") # "h1+p" becomes "h1@+@p"
+    .replace(/\+/g, "✄+✄") # "h1+p" becomes "h1✄+✄p"
     .replace(RegExp(" ~ ", "g"), "~") # "h1 ~ h2" becomes "h1~h1"
     .replace(RegExp(" ~", "g"), "~") # "h1 ~h2" becomes "h1~h1"
     .replace(/~ /g, "~") # "h1~ h2" becomes "h1~h1"
-    .replace(/~/g, "@~@") # "h1 ~ h2" becomes "h1@~@h1"
-    .replace(RegExp(" ", "g"), "@ @") # " " becomes "@ @"
-    .split("@") # use @ as a delimiter. Each element in the resulting array will be either a selector or a combinator
+    .replace(/~/g, "✄~✄") # "h1 ~ h2" becomes "h1✄~✄h1"
+    .replace(RegExp(" ", "g"), "✄ ✄") # " " becomes "✄ ✄"
+    .split("✄") # use ✄ as a delimiter. Each element in the resulting array will be either a selector or a combinator
 
   # attaching to $ instead of $.fn, since $.fn returns a jQuery object of the selector
   $.liveRef = ( selector ) ->
@@ -27,7 +25,6 @@ do ( $ = jQuery ) ->
     splitted = splitSelector( selector )
 
     # in a valid selector, number of combinators + number of selectors should be odd.
-    # ... need to determine if this is 100% true in all cases ...
     return false unless splitted.length % 2 is 1
 
     # hopefully we have a string something like ".product-item > .product-entry"
