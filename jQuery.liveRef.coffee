@@ -59,7 +59,7 @@ do ( $ = jQuery ) ->
       liveRefMethod = "find"
       $liveRefcontext = $( "body" )
 
-    return do ->
+    return ->
       $liveRefcontext[liveRefMethod]( liveRefSelector )
 
   # Quick and dirty. Needs testing.
