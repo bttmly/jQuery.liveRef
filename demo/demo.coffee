@@ -12,16 +12,19 @@ $ ->
 	$liveToggle = $ ".with-plugin .get-button"
 	$vanillaToggle = $ ".without-plugin .get-button"
 
-	listItem = $vanillaRef[0].outerHTML
+	$listItem = $vanillaRef.eq(0).clone()
 
 	$liveAdd.on "click", ->
-		$liveList.append $ listItem
+		$liveList.append $listItem.clone()
 
 	$vanillaAdd.on "click", ->
-		$vanillaList.append $ listItem
+		$vanillaList.append $listItem.clone()
 
 	$liveToggle.on "click", ->
 		$liveRef().toggleClass "halo"
 
 	$vanillaToggle.on "click", ->
 		$vanillaRef.toggleClass "halo"
+
+	$listItems = $( ".demo section" ).on "click", "li", ->
+		$( this ).remove()

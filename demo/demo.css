@@ -70,7 +70,16 @@ figcaption .user-info i:not(:first-of-type){
 	padding-left: 1rem;
 }
 
+button {
+	font-size: 100%;
+	font-family: inherit;
+	margin: 1em;
+	margin-top: 0;
+	padding: .5em 1em;
+	border: none;
+	cursor: pointer;
 
+}
 
 
 
