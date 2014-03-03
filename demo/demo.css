@@ -1,0 +1,84 @@
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Open Sans", "open-sans", sans-serif;
+	padding: 2em;
+}
+
+.wrapper {
+	width: 40em;
+	margin: 0 auto;
+}
+
+.demo {
+	border: 1px solid #ccc;
+	display: flex;
+}
+
+.demo section {
+	flex: 1;
+}
+
+.demo .without-plugin {
+	border-right: 1px solid #ccc;
+}
+
+.demo h2 {
+	text-align: center;
+}
+
+.demo ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.demo li {
+	margin: 1rem;
+}
+
+.demo li > a {
+	display: block;
+	color: inherit;
+	text-decoration: inherit;
+}
+
+.demo li > a:hover {
+	background: rgba(255,0,0,.1);
+}
+
+.demo figure {
+	margin: 0;
+	display: flex;
+}
+
+.demo figure img {
+	flex: 1;
+	margin-right: 1rem;
+	width: 100%;
+	border: 1px solid #ddd;
+}
+
+.demo figure figcaption {
+	flex: 4;
+}
+
+figcaption .user-info i:not(:first-of-type){
+	padding-left: 1rem;
+}
+
+
+
+
+
+
+
+
+
+.halo {
+	outline: 2px solid tomato;
+}
+
