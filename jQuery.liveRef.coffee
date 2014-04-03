@@ -66,7 +66,17 @@ do ( $ = jQuery ) ->
   $.fn.extend
     laterSiblings : ( selector ) ->
       selector = selector or -> return true
-      $parentChildren = this.parent().children()
-      index = $parentChildren.index( this )
-      return $parentChildren.slice( index ).filter( selector )
+      arr = []
+      this.each ->
+        e = this
+        while e = e.nextSibling
+          arr.push( e )
+      return $( arr ).filter( selector )
+
+      # this was the previous way... 
+      #
+      # selector = selector or -> return true
+      # $parentChildren = this.parent().children()
+      # index = $parentChildren.index( this )
+      # return $parentChildren.slice( index ).filter( selector )
 
