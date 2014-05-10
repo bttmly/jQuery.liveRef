@@ -43,7 +43,7 @@ do ( $ = jQuery ) ->
         when combinator is " " then "find"
         when combinator is "+" then "next"
         when combinator is ">" then "children"
-        when combinator is "~" then "laterSiblings"
+        when combinator is "~" then "nextAll"
 
       # the remainder of the array gets joined into a string
       # which is then used to get a jQuery object and cache it
@@ -61,22 +61,4 @@ do ( $ = jQuery ) ->
 
     return ->
       $liveRefcontext[liveRefMethod]( liveRefSelector )
-
-  # Quick and dirty. Needs testing.
-  $.fn.extend
-    laterSiblings : ( selector ) ->
-      selector = selector or -> return true
-      arr = []
-      this.each ->
-        e = this
-        while e = e.nextSibling
-          arr.push( e )
-      return $( arr ).filter( selector )
-
-      # this was the previous way... 
-      #
-      # selector = selector or -> return true
-      # $parentChildren = this.parent().children()
-      # index = $parentChildren.index( this )
-      # return $parentChildren.slice( index ).filter( selector )
 

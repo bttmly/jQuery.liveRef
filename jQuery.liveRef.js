@@ -39,20 +39,15 @@
     return $.fn.extend({
       laterSiblings: function(selector) {
         var arr;
-        selector = selector || function() {
-          return true;
-        };
         arr = [];
         this.each(function() {
-          var e, _results;
+          var e;
           e = this;
-          _results = [];
           while (e = e.nextSibling) {
-            _results.push(arr.push(e));
+            arr.push(e);
           }
-          return _results;
         });
-        return $(arr).filter(selector);
+        return $(arr).filter(selector || true);
       }
     });
   })(jQuery);
